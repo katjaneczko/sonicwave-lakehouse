@@ -1,0 +1,50 @@
+[project]
+name = "sonicwave-ingestion-pipeline"
+version = "0.1.0"
+description = "SonicWave lakehouse pipeline: Module 2 wheel carried onto Databricks (Unity Catalog + Delta)"
+readme = "README.md"
+authors = [
+    { name = "Katarzyna", email = "kat.janeczko@gmail.com" }
+]
+requires-python = ">=3.11"
+# No runtime deps: the wheel's rules are plain PySpark DataFrame code, and the
+# Databricks runtime provides pyspark + delta on every task. pyspark is a DEV
+# dependency only, so the offline test suite can run without a workspace.
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pyspark==4.0.0",
+    "pytest>=8.0",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "pre-commit>=3.7",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sonicwave_ingestion_pipeline"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# -ra: reason line for every non-passing test at the end
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+# E/F = pycodestyle+pyflakes (the baseline), I = import sorting,
+# UP = pyupgrade (modern syntax), B = bugbear (likely bugs), SIM = simplify.
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["src"]
+disallow_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
