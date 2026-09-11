@@ -44,7 +44,7 @@ def spark(tmp_path_factory: pytest.TempPathFactory) -> Iterator[SparkSession]:
         )
         .config("spark.sql.warehouse.dir", str(warehouse_dir))
     )
-    # delta-spark (pip) ships only the Python side; this adds the matching Delta JARs
+    # delta-spark (pip) ships only the Python side - this adds the matching Delta JARs
     # to the session (downloaded from Maven Central on first use)
     session = configure_spark_with_delta_pip(builder).getOrCreate()
     yield session
